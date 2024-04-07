@@ -7,39 +7,39 @@ document.addEventListener('DOMContentLoaded',(event)=>{
     runTime()
     remainingTickets()
     deleteMovie()
+    captureImages()
   
 })
 
 const buyTicket=document.createElement('div')
 buyTicket.addEventListener('click',event =>{
-    
+
 })
+
 function eventButton(){
     fetch('http://localhost:3000/films/1')
     .then(res => res.json())
     .then(data => console.log(data["capacity"] - data["tickets_sold"]))
-
-    
+   
 }
 function getmovieTitles(){
     const li = document.getElementById('li-item')
     li. innerHTML=`
-             <p id="giant" onclick="trigger(event)">The Giant Gila Monster <button type="button">Del</button> </p> 
-
-             <p>Manos:The Hands OfFate <button type="button">Del</button> </p
-              <p>Time Chasers <button type="button">Del</button></p>
-              <p>The Touch Of Satan <button type="button">Del</button> </p>
-              <p>Santa Claus Conquers The Martians <button type="button">Del</button></p>
-              <p>Track Of The Moon Beast <button type="button">Del</button> </p>
-              <p>The Skydivers <button type="button">Del</button></p>
-              <p>The Killer Shrews <button type="button">Del</button></p>
-              <p>Project Moon Base <button type="button">Del</button></p>
-              <p>The Giant Spider Invasion <button type="button">Del</button></p>
-              <p>Catalina Caper <button type="button">Del</button></p>
-              <p>Secret Agent Super Dragon <button type="button">Del</button></p>
-              <p>Wild Rebels <button type="button">Del</button></p>
-              <p>Danger: Diabolik <button type="button">Del</button></p>
-              <p>Village Of The Giants <button type="button">Del</button> </p> ` 
+             <li id="giant" onclick="trigger(event)">The Giant Gila Monster <button type="button">Del</button> </li> 
+             <li>Manos:The Hands OfFate <button type="button">Del</button> </li>
+              <li>Time Chasers <button type="button">Del</button></li>
+              <li>The Touch Of Satan <button type="button">Del</button> </li>
+              <li>Santa Claus Conquers The Martians <button type="button">Del</button></li>
+              <li>Track Of The Moon Beast <button type="button">Del</button> </li>
+              <li>The Skydivers <button type="button">Del</button></li>
+              <li>The Killer Shrews <button type="button">Del</button></li>
+              <li>Project Moon Base <button type="button">Del</button></li>
+              <li>The Giant Spider Invasion <button type="button">Del</button></li>
+              <li>Catalina Caper <button type="button">Del</button></li>
+              <li>Secret Agent Super Dragon <button type="button">Del</button></li>
+              <li>Wild Rebels <button type="button">Del</button></li>
+              <li>Danger: Diabolik <button type="button">Del</button></li>
+              <li>Village Of The Giants <button type="button">Del</button> </li> ` 
 }
 const divmovie = document.getElementById('title')
 function titlemovie(){
@@ -87,14 +87,15 @@ function showTime(){
 
 })
 })}
-const remainder = document.getElementById('showtime')
+
+const remainder = document.getElementById('ticket-num')
 function remainingTickets(){
     fetch('http://localhost:3000/films')
     .then(res => res.json())  
     .then((data) => {
     data.forEach((item) => {
      remainder.innerHTML=`
-     <span id="ticket-num"></span> remaining tickets`
+     <span id="ticket-num">${item["capacity"]-item["tickets_sold"]}</span> remaining tickets`
     })
 })}
 
@@ -102,18 +103,57 @@ function trigger(event){
     console.log(event)
 }
 
-function deleteMovie(movies){
-    const btns=document.querySelectorAll(".btn-delete")
-    btns.forEach((btn) => {
-        btn.addEventListener("click",(event)=>{
-            const delmovie= event.target.
-            deleteMovie(delmovie)
-      })
+const capimage=document.getElementById('poster')
+
+function captureImages(image){
+    fetch('http://localhost:3000/films/${id}',{
+        method:"PATCH",
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(image)
     })
-}
+        .then(res => res.json())
+        .then((data) => {
+            data.forEach((item)=>{
+                capimage.innerHTML=`
+                <img
+                id="poster"
+                src="db.json/${item.poster}"
+                alt="${getmovieTitles()}"/>
+                `
+            })
+        }
+    )}
+
+const delmovies= document.createElement('delete')
+function deleteMovie(id){
+    const btns=document.querySelectorAll("delete")
+    btns.forEach(btn => {
+        btn.addEventListener("click",function(){
+            const delmovie= btn.getAttribute('delete')
+
+            fetch('http://localhost:3000/films/${id}',{
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              })
+              .then(res => res.json())
+              .then(data => { console.log(data);
+
+                const list= document.getElementById(`item${item["Id"]}`);
+                list.remove();
+              })
+              })
+    })}
+    
+
+const soldoutli= document.createElement('li')
+soldoutli.setAttribute('class','sold-out')
 
 
-
-
-
+const ulmain= document.getElementById('films')
+ulmain.appendChild(soldoutli)
+      
 
