@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded',(event)=>{
             });
         })
     }
-    function eventButton(Id){
+    function eventButton(){
         fetch('http://localhost:3000/films/4')
         .then(res => res.json())
         .then(data => console.log(data["capacity"] - data["tickets_sold"]))
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded',(event)=>{
         .then(response => response.json())
         .then(movie => {
             if (movie.tickets_sold < movie.capacity) {
-                const newTicketsSold = movie.tickets_sold + 1;
+                const newTicketsSold = movie.tickets_sold -1
                 fetch('http://localhost:3000/films/${movieId}', {
                     method: "PATCH",
                     headers: {
@@ -60,21 +60,21 @@ document.addEventListener('DOMContentLoaded',(event)=>{
                 })
                 .then(response => response.json())
                 .then(updatedMovie => {
-                    const li = document.querySelector(li[data.id = "${movieId}"]);
+                    const li = document.querySelector(li[movie.id = "${movieId}"]);
                     if (updatedMovie.tickets_sold === updatedMovie.capacity) {
-                        li.classList.add("sold-out");
+                        li.getAttribute("sold-out");
                         li.textContent += " (Sold Out)";
                     }
                 })
             } else {
-                alert("Sold out!");
+                console.log("Sold out!");
             }
         })
       
     }
 
 const remainder = document.getElementById('ticket-num')
-function remainingTickets(){
+function remainingTickets(movieId){
     fetch('http://localhost:3000/films')
     .then(res => res.json())  
     .then((data) => {
