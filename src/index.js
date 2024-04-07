@@ -11,12 +11,12 @@ document.addEventListener('DOMContentLoaded',(event)=>{
         .then(response => response.json())
         .then(data => {
             data.forEach(movie => {
-                const li = document.createElement("li")
+                const li = document.createElement("li");
                 li.textContent = movie.title;
-                li.getAttribute("film", "item")
+                li.getAttribute("film", "item");
                 if (movie.tickets_sold == movie.capacity) {
-                    li.getAttribute("sold-out")
-                    li.textContent += " (Sold Out)"
+                    li.getAttribute("sold-out");
+                    li.textContent += " (Sold Out)";
                 }
                 li.addEventListener("click", function() {
                     const im = document.getElementById("poster");
@@ -26,12 +26,12 @@ document.addEventListener('DOMContentLoaded',(event)=>{
                     const showtime = document.getElementById("showtime");
                     const remainingTickets= document.getElementById("ticket-num")
                     
-                    im.src = movie.poster
-                    desc.textContent = movie.description
-                    movietitle.textContent = movie.title.toUppercase()
-                    runtime.textContent = movie.runtime + " minutes"
-                    showtime.textContent = movie.showtime
-                    remainingTickets= [movie.capacity]-[movie.tickets_sold]
+                    im.src = movie.poster;
+                    desc.textContent = movie.description;
+                    movietitle.textContent = movie.title;
+                    runtime.textContent = movie.runtime + " minutes";
+                    showtime.textContent = movie.showtime;
+                    remainingTickets= remainingTickets()
 
                 });
                 ul.appendChild(li);
@@ -74,15 +74,15 @@ document.addEventListener('DOMContentLoaded',(event)=>{
     }
 
 const remainder = document.getElementById('ticket-num')
-
 function remainingTickets(){
     fetch('http://localhost:3000/films')
     .then(res => res.json())  
-    .then(data => {
-    data.forEach((item) => console.log((item["capacity"])-(item["tickets_sold"])
-))}
-    )}
-
+    .then((data) => {
+    data.forEach((item) => {
+     remainder.innerHTML=`
+     <span id="ticket-num">${item["capacity"]-item["tickets_sold"]}</span> `
+    })
+})}
  
  
 
