@@ -19,18 +19,20 @@ document.addEventListener('DOMContentLoaded',(event)=>{
                     li.textContent += " (Sold Out)";
                 }
                 li.addEventListener("click", function() {
-                    const im = document.getElementById("poster");
-                    const desc= document.getElementById("film-info");
                     const movietitle = document.getElementById("title");
                     const runtime = document.getElementById("runtime");
+                    const desc= document.getElementById("film-info");
                     const showtime = document.getElementById("showtime");
+                    const im = document.getElementById("poster");
                     const remainingTickets= document.getElementById("ticket-num")
-                    
-                    im.src = movie.poster;
-                    desc.textContent = movie.description;
+                 
+            
+                
                     movietitle.textContent = movie.title;
                     runtime.textContent = movie.runtime + " minutes";
+                    desc.textContent = movie.description;
                     showtime.textContent = movie.showtime;
+                    im.src = movie.poster;
                     remainingTickets= remainingTickets()
 
                 });
@@ -83,7 +85,40 @@ function remainingTickets(movieId){
      <span id="ticket-num">${item["capacity"]-item["tickets_sold"]}</span> `
     })
 })}
- 
+
+
+const movietitle = document.getElementById("title");
+movietitle.getAttribute('button')
+
+const deleteButtons = document.createElement('deleteBtn');
+deleteButtons.textContent= "Delete"
+deleteButtons.getAttribute("delete-btn")
+
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const itemId = button.getAttribute('delete');
+
+      fetch(`http://localhost:3000/films/${itemId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response =>response.json())
+      
+      })
+      })
+      .then(data => {
+        console.log('Movie deleted successfully');
+        const listItem = document.getElementById(`item${data.movie}`);
+        listItem.remove();
+      })
+     
+   
+
+  
+
+
  
 
 
