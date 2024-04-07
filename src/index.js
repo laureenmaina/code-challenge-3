@@ -1,19 +1,19 @@
 document.addEventListener('DOMContentLoaded',(event)=>{
    eventButton()
    remainingTickets()
-   populateFilmList()
+   movieDetails()
   
 })
   // Function to fetch movie data information
     const ul= document.getElementById("films")
-    function populateFilmList() {
+    function movieDetails() {
         fetch("http://localhost:3000/films")
         .then(response => response.json())
         .then(data => {
             data.forEach(movie => {
                 const li = document.createElement("li");
                 li.textContent = movie.title;
-                li.getAttribute("film", "item");
+                li.className=("film", "item");
                 if (movie.tickets_sold == movie.capacity) {
                     li.getAttribute("sold-out");
                     li.textContent += " (Sold Out)";
@@ -25,9 +25,8 @@ document.addEventListener('DOMContentLoaded',(event)=>{
                     const showtime = document.getElementById("showtime");
                     const im = document.getElementById("poster");
                     const remainingTickets= document.getElementById("ticket-num")
-                 
-            
-                
+
+                    
                     movietitle.textContent = movie.title;
                     runtime.textContent = movie.runtime + " minutes";
                     desc.textContent = movie.description;
@@ -35,9 +34,13 @@ document.addEventListener('DOMContentLoaded',(event)=>{
                     im.src = movie.poster;
                     remainingTickets= remainingTickets()
 
-                });
-                ul.appendChild(li);
-            });
+                    ul.appendChild(li)
+
+               
+            
+                } 
+                ) 
+            })
         })
     }
     function eventButton(){
@@ -89,16 +92,17 @@ function remainingTickets(movieId){
 
 const movietitle = document.getElementById("title");
 movietitle.getAttribute('button')
-
 const deleteButtons = document.createElement('deleteBtn');
 deleteButtons.textContent= "Delete"
 deleteButtons.getAttribute("delete-btn")
+movietitle.appendChild(deleteButtons)
 
-  deleteButtons.forEach(button => {
-    button.addEventListener('click', function() {
+function deleteBtn(){
+ deleteButtons.forEach(button => {
+    button.addEventListener('click', (event)=>{
       const itemId = button.getAttribute('delete');
 
-      fetch(`http://localhost:3000/films/${itemId}`, {
+      fetch(`http://localhost:3000/films/${Id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -114,7 +118,7 @@ deleteButtons.getAttribute("delete-btn")
         listItem.remove();
       })
      
-   
+    }  
 
   
 
