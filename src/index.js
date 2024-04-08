@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Function to fetch and display movie details
 function movieDetails() {
     const ul = document.getElementById("films");
-    fetch("http://localhost:3000/films")
+    fetch("https://json-server-pckf.onrender.com/films")
     .then(response => response.json())
     .then(data => {
         data.forEach(movie => {
@@ -43,12 +43,12 @@ function movieDetails() {
 
 // Function to handle buying tickets
 function buyTicket(movieId) {
-    fetch(`http://localhost:3000/films/${movieId}`)
+    fetch(`https://json-server-pckf.onrender.com/films/${movieId}`)
     .then(response => response.json())
     .then(movie => {
         if (movie.tickets_sold < movie.capacity) {
             const newTicketsSold = movie.tickets_sold + 1; // Increment tickets sold
-            fetch(`http://localhost:3000/films/${movieId}`, {
+            fetch(`https://json-server-pckf.onrender.com/films/${movieId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -74,7 +74,7 @@ function remainingTickets() {
     const remainder = document.querySelectorAll('.ticket-num');
     remainder.forEach(remainderItem => {
         const movieId = remainderItem.getAttribute('data-id');
-        fetch(`http://localhost:3000/films/${movieId}`)
+        fetch(`https://json-server-pckf.onrender.com/films/${movieId}`)
         .then(response => response.json())
         .then(movie => {
             remainderItem.textContent = movie.capacity - movie.tickets_sold;
@@ -83,9 +83,9 @@ function remainingTickets() {
     });
 }
 
-// Function to delete a movie
+// Function to delete movies
 function deleteMovie(movieId) {
-    fetch(`http://localhost:3000/films/${movieId}`, {
+    fetch(`https://json-server-pckf.onrender.com/films/${movieId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
