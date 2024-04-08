@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded',(event)=>{
    eventButton()
    remainingTickets()
    movieDetails()
+
   
 })
   // Function to fetch movie data information
@@ -20,26 +21,25 @@ document.addEventListener('DOMContentLoaded',(event)=>{
                 }
                 li.addEventListener("click", function() {
                     const movietitle = document.getElementById("title");
-                    const runtime = document.getElementById("runtime");
-                    const desc= document.getElementById("film-info");
-                    const showtime = document.getElementById("showtime");
-                    const im = document.getElementById("poster");
-                    const remainingTickets= document.getElementById("ticket-num")
-
-                    
                     movietitle.textContent = movie.title;
+
+                    const runtime = document.getElementById("runtime");
                     runtime.textContent = movie.runtime + " minutes";
+
+                    const desc= document.getElementById("film-info");
                     desc.textContent = movie.description;
+
+                    const showtime = document.getElementById("showtime");
                     showtime.textContent = movie.showtime;
+
+                    const im = document.getElementById("poster");
                     im.src = movie.poster;
+
+                    const remainingTickets= document.getElementById("ticket-num")
                     remainingTickets= remainingTickets()
 
-                    ul.appendChild(li)
-
-               
-            
-                } 
-                ) 
+                   })
+                   ul.appendChild(li)
             })
         })
     }
@@ -102,7 +102,7 @@ function deleteBtn(){
     button.addEventListener('click', (event)=>{
       const itemId = button.getAttribute('delete');
 
-      fetch(`http://localhost:3000/films/${Id}`, {
+      fetch(`http://localhost:3000/films/${'id'}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
