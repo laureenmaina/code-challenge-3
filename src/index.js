@@ -1,124 +1,108 @@
-document.addEventListener('DOMContentLoaded',(event)=>{
-   eventButton()
-   remainingTickets()
-   movieDetails()
+document.addEventListener('DOMContentLoaded', () => {
+    movieDetails(); // Fetch movie details and display them
+    remainingTickets(); // Display remaining tickets for each movie
+});
 
-  
-})
-  // Function to fetch movie data information
-    const ul= document.getElementById("films")
-    function movieDetails() {
-        fetch("http://localhost:3000/films")
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(movie => {
-                const li = document.createElement("li");
-                li.textContent = movie.title;
-                li.className=("film", "item");
-                if (movie.tickets_sold == movie.capacity) {
-                    li.getAttribute("sold-out");
-                    li.textContent += " (Sold Out)";
-                }
-                li.addEventListener("click", function() {
-                    const movietitle = document.getElementById("title");
-                    movietitle.textContent = movie.title;
+// Function to fetch and display movie details
+function movieDetails() {
+    const ul = document.getElementById("films");
+    fetch("http://localhost:3000/films")
+    .then(response => response.json())
+    .then(data => {
+        data.forEach(movie => {
+            const li = document.createElement("li");
+            li.textContent = movie.title;
+            li.style.cursor = "pointer";
+            li.className = "film item";
+            if (movie.tickets_sold == movie.capacity) {
+                li.className += " sold-out";
+            }
+            li.addEventListener("click", () => {
+                const movietitle = document.getElementById("title");
+                movietitle.textContent = movie.title;
 
-                    const runtime = document.getElementById("runtime");
-                    runtime.textContent = movie.runtime + " minutes";
+                const runtime = document.getElementById("runtime");
+                runtime.textContent = movie.runtime + " minutes";
 
-                    const desc= document.getElementById("film-info");
-                    desc.textContent = movie.description;
+                const desc = document.getElementById("film-info");
+                desc.textContent = movie.description;
 
-                    const showtime = document.getElementById("showtime");
-                    showtime.textContent = movie.showtime;
+                const showtime = document.getElementById("showtime");
+                showtime.textContent = movie.showtime;
 
-                    const im = document.getElementById("poster");
-                    im.src = movie.poster;
+                const im = document.getElementById("poster");
+                im.src = movie.poster;
 
-                    const remainingTickets= document.getElementById("ticket-num")
-                    remainingTickets= remainingTickets()
+                const remainingTickets = document.getElementById("ticket-num");
+                remainingTickets.textContent = movie.capacity - movie.tickets_sold;
+            });
+            ul.appendChild(li);
+        });
+    });
+}
 
-                   })
-                   ul.appendChild(li)
+// Function to handle buying tickets
+function buyTicket(movieId) {
+    fetch(`http://localhost:3000/films/${movieId}`)
+    .then(response => response.json())
+    .then(movie => {
+        if (movie.tickets_sold < movie.capacity) {
+            const newTicketsSold = movie.tickets_sold + 1; // Increment tickets sold
+            fetch(`http://localhost:3000/films/${movieId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ tickets_sold: newTicketsSold })
             })
-        })
-    }
-    function eventButton(){
-        fetch('http://localhost:3000/films/4')
-        .then(res => res.json())
-        .then(data => console.log(data["capacity"] - data["tickets_sold"]))
-       
-    }
-    // Function to buy tickets
-    function buyTicket(movieId) {
-        fetch('http://localhost:3000/films/${movieId}')
+            .then(response => response.json())
+            .then(updatedMovie => {
+                const li = document.querySelector(`li[data-id="${movieId}"]`);
+                if (updatedMovie.tickets_sold === updatedMovie.capacity) {
+                    li.classList.add("sold-out");
+                }
+            })
+        } else {
+            console.log("Sold out!");
+        }
+    })
+  
+}
+
+// Function to display remaining tickets for each movie
+function remainingTickets() {
+    const remainder = document.querySelectorAll('.ticket-num');
+    remainder.forEach(remainderItem => {
+        const movieId = remainderItem.getAttribute('data-id');
+        fetch(`http://localhost:3000/films/${movieId}`)
         .then(response => response.json())
         .then(movie => {
-            if (movie.tickets_sold < movie.capacity) {
-                const newTicketsSold = movie.tickets_sold -1
-                fetch('http://localhost:3000/films/${movieId}', {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ tickets_sold: newTicketsSold })
-                })
-                .then(response => response.json())
-                .then(updatedMovie => {
-                    const li = document.querySelector(li[movie.id = "${movieId}"]);
-                    if (updatedMovie.tickets_sold === updatedMovie.capacity) {
-                        li.getAttribute("sold-out");
-                        li.textContent += " (Sold Out)";
-                    }
-                })
-            } else {
-                console.log("Sold out!");
-            }
+            remainderItem.textContent = movie.capacity - movie.tickets_sold;
         })
-      
-    }
+        .catch(error => console.error("Error:", error));
+    });
+}
 
-const remainder = document.getElementById('ticket-num')
-function remainingTickets(movieId){
-    fetch('http://localhost:3000/films')
-    .then(res => res.json())  
-    .then((data) => {
-    data.forEach((item) => {
-     remainder.innerHTML=`
-     <span id="ticket-num">${item["capacity"]-item["tickets_sold"]}</span> `
-    })
-})}
-
-
-const movietitle = document.getElementById("title");
-movietitle.getAttribute('button')
-const deleteButtons = document.createElement('deleteBtn');
-deleteButtons.textContent= "Delete"
-deleteButtons.getAttribute("delete-btn")
-movietitle.appendChild(deleteButtons)
-
-function deleteBtn(){
- deleteButtons.forEach(button => {
-    button.addEventListener('click', (event)=>{
-      const itemId = button.getAttribute('delete');
-
-      fetch(`http://localhost:3000/films/${'id'}`, {
+// Function to delete a movie
+function deleteMovie(movieId) {
+    fetch(`http://localhost:3000/films/${movieId}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         }
-      })
-      .then(response =>response.json())
-      
-      })
-      })
-      .then(data => {
-        console.log('Movie deleted successfully');
-        const listItem = document.getElementById(`item${data.movie}`);
-        listItem.remove();
-      })
-     
-    }  
+    })
+    .then(response => {
+        if (response.ok) {
+            const listItem = document.querySelector(`li[data-id="${movieId}"]`);
+            listItem.remove();
+            console.log('Movie deleted successfully');
+        } else {
+            console.error('Failed to delete movie');
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
 
   
 
