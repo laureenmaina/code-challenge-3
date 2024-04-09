@@ -73,33 +73,7 @@ fetch('https://json-server-pckf.onrender.com/films')
     li.appendChild(del)
 })
 
-// Function to handle buying tickets
-function buyTicket(movieId) {
-    fetch(`https://json-server-pckf.onrender.com/films/${movieId}`)
-    .then(response => response.json())
-    .then(movie => {
-        if (movie.tickets_sold < movie.capacity) {
-            const newTicketsSold = movie.tickets_sold + 1; // Increment tickets sold
-            fetch(`https://json-server-pckf.onrender.com/films/${movieId}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ tickets_sold: newTicketsSold })
-            })
-            .then(response => response.json())
-            .then(updatedMovie => {
-                const li = document.querySelector(`li[data-id="${movieId}"]`);
-                if (updatedMovie.tickets_sold === updatedMovie.capacity) {
-                    li.classList.add("sold-out");
-                }
-            })
-        } else {
-            console.log("Sold out!");
-        }
-    })
-  
-}
+
 
 // Function to display remaining tickets for each movie
 function remainingTickets() {
@@ -160,6 +134,9 @@ function deleteMovie(movieId) {
     }
             
     )}
+
+
+// Function to handle buying tickets
 
     function buyTicket(ticket){
         const num= document.getElementById("ticket-num")
