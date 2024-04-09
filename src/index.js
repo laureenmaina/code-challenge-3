@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     movieDetails(); // Fetch movie details and display them
     remainingTickets(); // Display remaining tickets for each movie
+    deleteMovie()
 });
 
 // Function to fetch and display movie details
@@ -35,11 +36,47 @@ function movieDetails() {
 
                 const remainingTickets = document.getElementById("ticket-num");
                 remainingTickets.textContent = movie.capacity - movie.tickets_sold;
+
+                
             });
             ul.appendChild(li);
-        });
+    
     });
-}
+})}
+const li = document.createElement("li");
+li.className = "film item";
+li.addEventListener("click", () => {
+
+fetch('https://json-server-pckf.onrender.com/films')
+.then(response => response.json())
+.then(data => {
+    
+        const del = document.createElement("li");
+        del.className = "delete-btn";
+       
+
+        del.innerHTML=`
+        <button>Del movie1</button>
+        <button>Del movie2</button>
+        <button>Del movie3</button>
+        <button>Del movie4</button>
+        <button>Del movie5</button>
+        <button>Del movie6</button>
+        <button>Del movie7</button>
+        <button>Del movie8</button>
+        <button>Del movie9</button>
+        <button>Del movie10</button>
+        <button>Del movie11</button>
+        <button>Del movie12</button>
+        <button>Del movie13</button>
+        <button>Del movie14</button>
+        <button>Del movie15</button>`
+       
+          
+    })
+    
+    li.appendChild(del)
+})
 
 // Function to handle buying tickets
 function buyTicket(movieId) {
@@ -84,6 +121,30 @@ function remainingTickets() {
 }
 
 // Function to delete movies
+
+
+function updateTicketsSold(movieId, ticketsSold) {
+        fetch(`https://json-server-pckf.onrender.com/${movieId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "tickets_sold": ticketsSold
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update tickets sold');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating tickets sold:', error);
+        });
+    
+    };
+
+
 function deleteMovie(movieId) {
     fetch(`https://json-server-pckf.onrender.com/films/${movieId}`, {
         method: 'DELETE',
@@ -92,6 +153,7 @@ function deleteMovie(movieId) {
         }
     })
     .then(response => {
+        
         if (response.ok) {
             const listItem = document.querySelector(`li[data-id="${movieId}"]`);
             listItem.remove();
@@ -99,9 +161,16 @@ function deleteMovie(movieId) {
         } else {
             console.error('Failed to delete movie');
         }
-    })
-    .catch(error => console.error("Error:", error));
-}
+
+        // const btn= document.createElement("del")
+        // btn.forEach((btn)=>{
+        //     btn.addEventListener("click",(event)=>{
+        //         const delmovie=event.target.movieDetails
+    }
+            
+    )}
+
+
 
 
   
