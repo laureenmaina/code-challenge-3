@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     movieDetails(); // Fetch movie details and display them
     remainingTickets(); // Display remaining tickets for each movie
     deleteMovie()
+    buyTicket()
+   
+
 });
 
 // Function to fetch and display movie details
@@ -11,33 +14,44 @@ function movieDetails() {
     .then(response => response.json())
     .then(data => {
         data.forEach(movie => {
-            const li = document.createElement("li");
-            li.textContent = movie.title;
+            // const li = document.createElement("li");
+             const li = document.getElementById('li-item');
+             const btn = document.createElement("li");
+             btn.innerHTML=`
+            <span id="${movie.id}"> ${movie.title}</span>
+             <button>Delete</button>
+
+             
+             `
+             li.appendChild(btn)
+            // li.textContent = movie.title;
             li.style.cursor = "pointer";
             li.className = "film item";
             if (movie.tickets_sold == movie.capacity) {
                 li.className += " sold-out";
             }
-            li.addEventListener("click", () => {
+            const span = document.getElementById(`${movie.id}` )
+            span.addEventListener("click", () => {
                 const movietitle = document.getElementById("title");
-                movietitle.textContent = movie.title;
+                movietitle.textContent = `${movie.title}` ;
 
                 const runtime = document.getElementById("runtime");
-                runtime.textContent = movie.runtime + " minutes";
+                runtime.textContent = `${movie.runtime}` + " minutes";
 
                 const desc = document.getElementById("film-info");
-                desc.textContent = movie.description;
+                desc.textContent = `${movie.description}` ;
 
                 const showtime = document.getElementById("showtime");
-                showtime.textContent = movie.showtime;
+                showtime.textContent = `${movie.showtime}` ;
 
                 const im = document.getElementById("poster");
-                im.src = movie.poster;
+                im.src = `${movie.poster}` ;
 
                 const remainingTickets = document.getElementById("ticket-num");
-                remainingTickets.textContent = movie.capacity - movie.tickets_sold;
+                remainingTickets.textContent = `${movie.capacity}`  - `${movie.tickets_sold}` ;
 
-                
+    
+             
             });
             ul.appendChild(li);
     
@@ -53,26 +67,7 @@ fetch('https://json-server-pckf.onrender.com/films')
     
         const del = document.createElement("li");
         del.className = "delete-btn";
-       
-
-        del.innerHTML=`
-        <button>Del movie1</button>
-        <button>Del movie2</button>
-        <button>Del movie3</button>
-        <button>Del movie4</button>
-        <button>Del movie5</button>
-        <button>Del movie6</button>
-        <button>Del movie7</button>
-        <button>Del movie8</button>
-        <button>Del movie9</button>
-        <button>Del movie10</button>
-        <button>Del movie11</button>
-        <button>Del movie12</button>
-        <button>Del movie13</button>
-        <button>Del movie14</button>
-        <button>Del movie15</button>`
-       
-          
+      
     })
     
     li.appendChild(del)
@@ -162,13 +157,21 @@ function deleteMovie(movieId) {
             console.error('Failed to delete movie');
         }
 
-        // const btn= document.createElement("del")
-        // btn.forEach((btn)=>{
-        //     btn.addEventListener("click",(event)=>{
-        //         const delmovie=event.target.movieDetails
     }
             
     )}
+
+    function buyTicket(ticket){
+        const num= document.getElementById("ticket-num")
+        const value= parseInt(num.innerHTML)
+        num.innerHTML=value
+        if(value>1){
+            num.innerHTML=value+ticket
+        }else{
+            num.textContent="Sold Out!"
+        }
+
+    }
 
 
 
