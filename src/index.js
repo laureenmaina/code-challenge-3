@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     movieDetails(); // Fetch movie details and display them
     remainingTickets(); // Display remaining tickets for each movie
-    // deleteMovie()
+    deleteMovie()
     buyTicket()
     updateTicketsSold()
-    // deleteDetails()
+ 
    
 
 });
