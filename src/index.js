@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     movieDetails(); // Fetch movie details and display them
     // remainingTickets(); // Display remaining tickets for each movie
-    deleteMovie()
+    deleteMovie(``)
     // delMovie()
     buyTicket()
     updateTicketsSold()
@@ -84,9 +84,10 @@ function updateTicketsSold(film) {
         fetch(`https://json-server-pckf.onrender.com/films/${film}`, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(film)
+                "Content-Type": "application/json"
+                },
+            
+            body:JSON.stringify(film)
         })
         .then(response => response.json())
         .then(data => console.log(data))
