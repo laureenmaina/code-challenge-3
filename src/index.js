@@ -1,12 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     movieDetails(); // Fetch movie details and display them
-    remainingTickets(); // Display remaining tickets for each movie
-    // deleteMovie()
+    // remainingTickets(); // Display remaining tickets for each movie
+    deleteMovie()
     buyTicket()
-    updateTicketsSold()
-    // deleteDetails()
-   
-
+    // updateTicketsSold()
 });
 
 // Function to fetch and display movie details
@@ -16,15 +13,21 @@ function movieDetails() {
     .then(response => response.json())
     .then(data => {
         data.forEach(movie => {
-            // const li = document.createElement("li");
              const li = document.getElementById('li-item');
              const btn = document.createElement("li");
              btn.innerHTML=`
             <span id="${movie.id}"> ${movie.title}</span>
-             <button id="delete" onclick="deleteBtn()">Delete</button>
-              `
+             <button id="delete" onclick="delbtn()">Delete</button>
+             `
+
+              li.appendChild(btn)
+
+btn.querySelector("#delete").addEventListener('click', () =>{
+    btn.innerHTML=''
+    delbtn(`${film.id}`)
+              })
          
-             li.appendChild(btn)
+          
             
             // li.textContent = movie.title;
             li.style.cursor = "pointer";
@@ -60,92 +63,66 @@ function movieDetails() {
     });
 })}
 
-// function deleteDetails(details){
-//     const deleteb = document.getElementById("delete");
-//     deleteb.forEach((deleteb)=> {
-//         deleteb.addEventListener("click", (event)=>{
-//             const delbtn=event.target.id
-//             deleteDetail(movieDetails)
-
-//     })
 
 
-// .then(response => response.json())
-// .then(data => console.log(data.remove(movieDetails)))   
-  
-// })}
+function deleteMovie(del){
+     fetch(`https://json-server-pckf.onrender.com/films/${del}`,{
+        method: "DELETE",
+        headers:{
+            "Content-type": "application/json"
+        }
 
-
-
-// Function to display remaining tickets for each movie
-function remainingTickets() {
-    const remainder = document.querySelectorAll('.ticket-num');
-    remainder.forEach(remainderItem => {
-        const movieId = remainderItem.getAttribute('data-id');
-        fetch(`https://json-server-pckf.onrender.com/films/${movieId}`)
-        .then(response => response.json())
-        .then(movie => {
-            remainderItem.textContent = movie.capacity - movie.tickets_sold;
-        })
-        .catch(error => console.error("Error:", error));
-    });
+    })
+    .then(response =>response.json())
+    .then(data => console.log(data))
 }
 
+// // Function to display remaining tickets for each movie
+// function remainingTickets() {
+//     const remainder =document.getElementById('ticket-num');
+//     remainder.forEach(remainderItem => {
+//         // const movieId = remainderItem.getAttribute('data-id');
+        // fetch(`https://json-server-pckf.onrender.com/films/${remainderItem.id}`)
+//         .then(response => response.json())
+//         .then(movie => {
+//             remainderItem.textContent = movie.capacity - movie.tickets_sold;
+//         })
+//         .catch(error => console.error("Error:", error));
+//     });
+// }
 
 
 
-function updateTicketsSold(movieId, ticketsSold) {
-        fetch(`https://json-server-pckf.onrender.com/${movieId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "tickets_sold": ticketsSold
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update tickets sold');
-            }
-        })
-        .catch(error => {
-            console.error('Error updating tickets sold:', error);
-        });
+
+// function updateTicketsSold(movieId, ticketsSold) {
+//         fetch(`https://json-server-pckf.onrender.com/${movieId}`, {
+//             method: 'PATCH',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({
+//                 "tickets_sold": ticketsSold
+//             })
+//         })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Failed to update tickets sold');
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error updating tickets sold:', error);
+//         });
     
-    };
-
-
-// function deleteMovie(movieId) {
-//     fetch(`https://json-server-pckf.onrender.com/films/${movieId}`, {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         }
-//     })
-//     .then(response => {
-        
-//         if (response.ok) {
-//             const listItem = document.getElementsByClassName("delete-btn");
-//             listItem.remove();
-//             console.log('Movie deleted successfully');
-//         } else {
-//             console.error('Failed to delete movie');
-//         }
-
-//     }
-            
-//     )}
-
+//     };
 
 // Function to handle buying tickets
 
-    function buyTicket(ticket){
-        const num= document.getElementById("ticket-num")
-        const value= parseInt(num.innerHTML)
-        num.innerHTML=value
+function buyTicket(ticket){
+    const num= document.getElementById("ticket-num")
+    const value= parseInt(num.innerHTML)
+    num.innerHTML=value
         if(value>1){
-            num.innerHTML=value+ticket
+            num.innerHTML= value+ticket
         }else{
             num.textContent="Sold Out!"
         }
