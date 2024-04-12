@@ -96,7 +96,7 @@ function updateTicketsSold(film) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            "tickets_sold": films.tickets_sold
+            "tickets_sold": `${films.tickets_sold}`
         })
     })
     .then(response => response.json())
