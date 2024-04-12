@@ -2,8 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     movieDetails(); // Fetch movie details and display them
     // remainingTickets(); // Display remaining tickets for each movie
     deleteMovie()
+    // delMovie()
     buyTicket()
-    // updateTicketsSold()
+    updateTicketsSold()
 });
 
 // Function to fetch and display movie details
@@ -24,7 +25,7 @@ function movieDetails() {
 
 btn.querySelector("#delete").addEventListener('click', () =>{
     btn.innerHTML=''
-    deleteMovie(`${movie.id}`)
+    delMovie(`${movie.id}`)
               })
          
           
@@ -36,6 +37,7 @@ btn.querySelector("#delete").addEventListener('click', () =>{
                 li.className += " sold-out";
             }
             const span = document.getElementById(`${movie.id}` )
+
             span.addEventListener("click", () => {
                 const movietitle = document.getElementById("title");
                 movietitle.textContent = `${movie.title}` ;
@@ -66,19 +68,20 @@ btn.querySelector("#delete").addEventListener('click', () =>{
 
 
 function deleteMovie(id){
-     fetch(`https://json-server-pckf.onrender.com/films/${id}`,{
-        method: "DELETE",
-        headers:{
-            "Content-type": "application/json"
-        }
-    })
-    .then(response =>response.json())
-    .then(data => console.log(data))
+    fetch(`https://json-server-pckf.onrender.com/films/${id}`,{
+       method: "DELETE",
+       headers:{
+           "Content-type": "application/json"
+       }
+   })
+   .then(response =>response.json())
+   .then(data => console.log(data))
 }
 
 
+
 function updateTicketsSold(film) {
-        fetch(`https://json-server-pckf.onrender.com/films/${film.id}`, {
+        fetch(`https://json-server-pckf.onrender.com/films/${film}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
