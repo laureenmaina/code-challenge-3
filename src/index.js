@@ -24,7 +24,7 @@ function movieDetails() {
 
 btn.querySelector("#delete").addEventListener('click', () =>{
     btn.innerHTML=''
-    delbtn(`${film.id}`)
+    deleteMovie(`${movie.id}`)
               })
          
           
@@ -65,13 +65,12 @@ btn.querySelector("#delete").addEventListener('click', () =>{
 
 
 
-function deleteMovie(del){
-     fetch(`https://json-server-pckf.onrender.com/films/${del}`,{
+function deleteMovie(id){
+     fetch(`https://json-server-pckf.onrender.com/films/${id}`,{
         method: "DELETE",
         headers:{
             "Content-type": "application/json"
         }
-
     })
     .then(response =>response.json())
     .then(data => console.log(data))
@@ -95,7 +94,7 @@ function deleteMovie(del){
 
 
 // function updateTicketsSold(movieId, ticketsSold) {
-//         fetch(`https://json-server-pckf.onrender.com/${movieId}`, {
+//         fetch(`https://json-server-pckf.onrender.com/films/${movieId}`, {
 //             method: 'PATCH',
 //             headers: {
 //                 'Content-Type': 'application/json'
