@@ -76,22 +76,6 @@ function deleteMovie(id){
     .then(data => console.log(data))
 }
 
-// // Function to display remaining tickets for each movie
-// function remainingTickets() {
-//     const remainder =document.getElementById('ticket-num');
-//     remainder.forEach(remainderItem => {
-//         // const movieId = remainderItem.getAttribute('data-id');
-        // fetch(`https://json-server-pckf.onrender.com/films/${remainderItem.id}`)
-//         .then(response => response.json())
-//         .then(movie => {
-//             remainderItem.textContent = movie.capacity - movie.tickets_sold;
-//         })
-//         .catch(error => console.error("Error:", error));
-//     });
-// }
-
-
-
 
 function updateTicketsSold(film) {
         fetch(`https://json-server-pckf.onrender.com/films/${film.id}`, {
