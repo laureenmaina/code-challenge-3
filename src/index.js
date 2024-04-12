@@ -93,26 +93,18 @@ function deleteMovie(id){
 
 
 
-// function updateTicketsSold(movieId, ticketsSold) {
-//         fetch(`https://json-server-pckf.onrender.com/films/${movieId}`, {
-//             method: 'PATCH',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({
-//                 "tickets_sold": ticketsSold
-//             })
-//         })
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Failed to update tickets sold');
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error updating tickets sold:', error);
-//         });
-    
-//     };
+function updateTicketsSold(film) {
+        fetch(`https://json-server-pckf.onrender.com/films/${film.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(film)
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+            
+    };
 
 // Function to handle buying tickets
 
