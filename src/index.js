@@ -24,7 +24,7 @@ function movieDetails() {
 
 btn.querySelector("#delete").addEventListener('click', () =>{
     btn.innerHTML=''
-    delbtn(`${film.id}`)
+    deleteMovie(`${movie.id}`)
               })
          
           
@@ -65,13 +65,12 @@ btn.querySelector("#delete").addEventListener('click', () =>{
 
 
 
-function deleteMovie(del){
-     fetch(`https://json-server-pckf.onrender.com/films/${del}`,{
+function deleteMovie(id){
+     fetch(`https://json-server-pckf.onrender.com/films/${id}`,{
         method: "DELETE",
         headers:{
             "Content-type": "application/json"
         }
-
     })
     .then(response =>response.json())
     .then(data => console.log(data))
@@ -94,26 +93,18 @@ function deleteMovie(del){
 
 
 
-// function updateTicketsSold(movieId, ticketsSold) {
-//         fetch(`https://json-server-pckf.onrender.com/${movieId}`, {
-//             method: 'PATCH',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({
-//                 "tickets_sold": ticketsSold
-//             })
-//         })
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Failed to update tickets sold');
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error updating tickets sold:', error);
-//         });
-    
-//     };
+function updateTicketsSold(film) {
+        fetch(`https://json-server-pckf.onrender.com/films/${film.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(film)
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+            
+    };
 
 // Function to handle buying tickets
 
