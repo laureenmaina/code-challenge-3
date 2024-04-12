@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     movieDetails(); // Fetch movie details and display them
     // remainingTickets(); // Display remaining tickets for each movie
-    deleteMovie(``)
+    deleteMovie()
     // delMovie()
     buyTicket()
     updateTicketsSold()
@@ -10,7 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
 // Function to fetch and display movie details
 function movieDetails() {
     const ul = document.getElementById("films");
-    fetch("https://json-server-pckf.onrender.com/films")
+    fetch(`https://json-server-pckf.onrender.com/films`,{
+        method: "GET",
+        headers:{
+            "Content-type":"application/json"
+        }
+
+    })
     .then(response => response.json())
     .then(data => {
         data.forEach(movie => {
@@ -67,46 +73,48 @@ btn.querySelector("#delete").addEventListener('click', () =>{
 
 
 
-function deleteMovie(id){
-    fetch(`https://json-server-pckf.onrender.com/films/${id}`,{
-       method: "DELETE",
-       headers:{
-           "Content-type": "application/json"
-       }
-   })
-   .then(response =>response.json())
-   .then(data => console.log(data))
+function deleteMovie(id) {
+    fetch(`https://json-server-pckf.onrender.com/films/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error("Error deleting movie:", error));
 }
 
 
 
+
+
 function updateTicketsSold(film) {
-        fetch(`https://json-server-pckf.onrender.com/films/${film}`, {
-            method: 'PATCH',
-            headers: {
-                "Content-Type": "application/json"
-                },
-            
-            body:JSON.stringify(film)
+    fetch(`https://json-server-pckf.onrender.com/films/${film.id}`, {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "tickets_sold": film.tickets_sold
         })
-        .then(response => response.json())
-        .then(data => console.log(data))
-            
-    };
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error("Error updating tickets sold:", error));
+}
 
 // Function to handle buying tickets
 
-function buyTicket(ticket){
-    const num= document.getElementById("ticket-num")
-    const value= parseInt(num.innerHTML)
-    num.innerHTML=value
-        if(value>1){
-            num.innerHTML= value+ticket
-        }else{
-            num.textContent="Sold Out!"
-        }
-
+function buyTicket(ticket) {
+    const num = document.getElementById("ticket-num");
+    let value = parseInt(num.textContent);
+    if (value > 1) {
+        num.textContent = value + ticket;
+    } else {
+        num.textContent = "Sold Out!";
     }
+}
 
 
 
