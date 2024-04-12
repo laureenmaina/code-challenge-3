@@ -90,13 +90,13 @@ function deleteMovie(id) {
 
 
 function updateTicketsSold(film) {
-    fetch(`https://json-server-pckf.onrender.com/films/${film.id}`, {
+    fetch(`https://json-server-pckf.onrender.com/films/${film}`, {
         method: 'PATCH',
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            "tickets_sold": film.tickets_sold
+            "tickets_sold": films.tickets_sold
         })
     })
     .then(response => response.json())
